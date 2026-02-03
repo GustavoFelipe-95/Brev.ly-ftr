@@ -14,6 +14,7 @@ export const router = createBrowserRouter([
     loader: async ({ params }) => {
       return params.shortenedLink;
     },
+    // loadShotenedLink
     errorElement: <NotFoundPage />,
   },
   {

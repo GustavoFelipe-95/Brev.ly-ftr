@@ -5,17 +5,20 @@ import { useEffect } from 'react';
 export function RedirectingPage() {
 
   const { shortenedLink } = useParams();
+  const teste = useParams();
 
   function redirectToOriginalUrl(shortenedLink: string | undefined) {
     // Simulação de redirecionamento após buscar a URL original
-    const urlMapping: Record<string, string> = {
-      'exemplo': 'https://www.exemplo.com',
-      'teste': 'https://www.teste.com',
-    };
-    const originalUrl = shortenedLink ? urlMapping[shortenedLink] : null;
-    if (originalUrl) {
-      window.location.href = originalUrl;
-    }
+    // const urlMapping: Record<string, string> = {
+    //   'exemplo': 'https://www.exemplo.com',
+    //   'teste': 'https://www.teste.com',
+    // };
+    // const originalUrl = shortenedLink ? urlMapping[shortenedLink] : null;
+    // if (originalUrl) {
+    //   window.location.href = originalUrl;
+    // }
+
+    console.log('Redirecionando para o link original associado a:', shortenedLink);
   }
 
   useEffect(() => {
