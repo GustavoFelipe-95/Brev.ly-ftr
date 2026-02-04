@@ -1,0 +1,1 @@
+CREATE DATABASE shortened_links;
