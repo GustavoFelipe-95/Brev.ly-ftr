@@ -1,10 +1,11 @@
 import z from "zod";
 
 const envSchema = z.object({
-  PORT: z.coerce.number().default(3333),
+  PORT: z.coerce.number().default(3000),
   POSTGRES_USER: z.string(),
   POSTGRES_PASSWORD: z.string(),
   POSTGRES_DB: z.string(),
+  POSTGRES_PORT: z.coerce.number().default(5432),
   DATABASE_URL: z.string().refine((url) => url.startsWith("postgresql://"), {
     message: "DATABASE_URL must be a PostgreSQL connection string",
   }),

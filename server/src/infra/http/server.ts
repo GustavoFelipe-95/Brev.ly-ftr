@@ -1,12 +1,16 @@
+import { env } from "@/env";
 import fastifyCors from "@fastify/cors";
 import { fastifySwagger } from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastify from "fastify";
 import {
   hasZodFastifySchemaValidationErrors,
+  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler
 } from "fastify-type-provider-zod";
+import { healthCheckRoute } from "./routes/helth-check";
+import { createLinkRoute } from "./routes/create-link";
 
 const server = fastify()
 
@@ -32,14 +36,27 @@ server.register(fastifySwagger, {
     info: {
       title: "Upload Server API",
       version: "1.0.0",
+      description: "API for Upload Server",
+      summary: "Upload Server API documentation",
+      contact: {
+        name: "Gustavo Felipe",
+        email: "zegustavo149@gmail.com",
+      },
+      license: {
+        name: "MIT",
+        url: "https://opensource.org/license/mit/",
+      },
     },
   },
-  // transform: transformSwaggerSchema,
+  transform: jsonSchemaTransform,
 });
 server.register(fastifySwaggerUi, {
   routePrefix: "/docs",
 });
 
-server.listen({ port: 3333, host: '0.0.0.0' }).then(() => {
-  console.log('HTTP server running on http://localhost:3333')
+server.register(healthCheckRoute);
+server.register(createLinkRoute);
+
+server.listen({ port: env.PORT, host: '0.0.0.0' }).then(() => {
+  console.log(`HTTP server running on http://localhost:${env.PORT}`)
 })
