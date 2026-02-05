@@ -4,7 +4,7 @@ import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 
 export const findOneShortLinkRoute: FastifyPluginAsyncZod = async server => {
-    server.get('/', {
+    server.get('/:code', {
         schema: {
             summary: "Find One Short Link",
             description: "Retrieves a short link by its code.",
