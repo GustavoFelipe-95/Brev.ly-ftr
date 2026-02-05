@@ -12,6 +12,8 @@ import {
 import { healthCheckRoute } from "./routes/helth-check";
 import { createLinkRoute } from "./routes/create-link";
 import { deleteLinkRoute } from "./routes/delete-link";
+import { listLinkRoute } from "./routes/get-links";
+import { findOneShortLinkRoute } from "./routes/get-original-link-by-short-link";
 
 const server = fastify()
 
@@ -56,6 +58,8 @@ server.register(fastifySwaggerUi, {
 });
 
 server.register(healthCheckRoute);
+server.register(listLinkRoute);
+server.register(findOneShortLinkRoute);
 server.register(createLinkRoute);
 server.register(deleteLinkRoute);
 
