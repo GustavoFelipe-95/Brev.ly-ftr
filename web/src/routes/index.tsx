@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router";
 import { Home } from "../pages/home";
 import { NotFoundPage } from "../pages/not-found-page";
 import { RedirectingPage } from "../pages/redirecting-page";
+import { searchOneShortLink } from "../interceptor/short-link-search";
 
 export const router = createBrowserRouter([
   {
@@ -11,10 +12,7 @@ export const router = createBrowserRouter([
   {
     path: "/:shortenedLink",
     element: <RedirectingPage />,
-    loader: async ({ params }) => {
-      return params.shortenedLink;
-    },
-    // loadShotenedLink
+    loader: searchOneShortLink,
     errorElement: <NotFoundPage />,
   },
   {

@@ -2,8 +2,12 @@ import { useForm } from "react-hook-form";
 import { CustomInput } from "../systemUI/custom-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newLinkSchema } from "../../schemas/newLinkSchema";
+import { newShortenedLink } from "../../http/shorten-api";
+import { useDataStoreLink } from "../../dataStore/data-store-link";
 
 export function NewLink() {
+  const { addStoreLink } = useDataStoreLink();
+
   const {
     register,
     handleSubmit,
@@ -23,11 +27,20 @@ export function NewLink() {
   const filledFields = !watch('originalLink') || !watch('shortenedLink') || Object.values(errors).length > 0;
 
   async function handleNewShortLink(data: any): Promise<void> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 2000);
-    });
+      try {
+        clearErrors();
+
+        const response = await newShortenedLink(data);
+        console.log(response);
+        addStoreLink(response);
+
+        reset();
+      } catch (error: any) {
+        setError('shortenedLink', {
+          type: 'manual',
+          message: error.message || 'An error occurred while creating the short link.',
+        });
+      }
   }
 
   return (

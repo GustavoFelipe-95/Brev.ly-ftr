@@ -1,29 +1,19 @@
-import { Link, useParams } from 'react-router';
+import { Link, useLoaderData } from 'react-router';
 import LogoBrevLy from '../assets/Logo_Icon.svg';
 import { useEffect } from 'react';
+import type { IShortLinkOutput } from '../types/link';
+import { useDataStoreLink } from '../dataStore/data-store-link';
 
 export function RedirectingPage() {
-
-  const { shortenedLink } = useParams();
-  const teste = useParams();
-
-  function redirectToOriginalUrl(shortenedLink: string | undefined) {
-    // Simulação de redirecionamento após buscar a URL original
-    // const urlMapping: Record<string, string> = {
-    //   'exemplo': 'https://www.exemplo.com',
-    //   'teste': 'https://www.teste.com',
-    // };
-    // const originalUrl = shortenedLink ? urlMapping[shortenedLink] : null;
-    // if (originalUrl) {
-    //   window.location.href = originalUrl;
-    // }
-
-    console.log('Redirecionando para o link original associado a:', shortenedLink);
-  }
+  const { originalLink, shortenedLink, accessCount } = useLoaderData() as IShortLinkOutput;
+  const {updateAccessLink} = useDataStoreLink();
 
   useEffect(() => {
-    redirectToOriginalUrl(shortenedLink);
-  }, [shortenedLink]);
+    if (originalLink) {
+      updateAccessLink(shortenedLink, accessCount);
+      window.location.href = originalLink;
+    }
+  }, [originalLink]);
 
   return (
     <main className='flex h-screen justify-center items-center'>
@@ -32,7 +22,7 @@ export function RedirectingPage() {
         <p className='text-xl'>Redirecionando...</p>
         <p className='text-md text-center text-gray-600 font-semibold'>
           O link será aberto automaticamente em alguns instantes.<br />
-          Não foi redirecionado? <Link className='text-blue-base' to="/">Acesse aqui</Link>.
+          Não foi redirecionado? <Link className='text-blue-base' to={`${originalLink ?? '/'}`}>Acesse aqui</Link>.
         </p>
       </div>
     </main>
