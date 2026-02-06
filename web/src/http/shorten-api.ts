@@ -3,7 +3,7 @@ import { api } from "./api";
 const header = { 'Content-Type': 'application/json' };
 
 export async function findOneShortened(shortenedLink: string) {
-    const response = await api.get(`/${shortenedLink}`);
+    const response = await api.get(`/${shortenedLink}`, { headers: header });
     if (response.status !== 200) {
         throw new Error("Failed to fetch the shortened link");
     }
@@ -11,7 +11,7 @@ export async function findOneShortened(shortenedLink: string) {
 }
 
 export async function findAllShortened() {
-    const response = await api.get("/");
+    const response = await api.get("/", { headers: header });
     if (response.status !== 200) {
         throw new Error("Failed to fetch shortened links");
     }
@@ -19,7 +19,11 @@ export async function findAllShortened() {
 }
 
 export async function generatedCSVAllShortened() {
-    // links
+    const response = await api.get("/export", { headers: header });
+    if (response.status !== 200) {
+        throw new Error("Failed to export CSV");
+    }
+    return response.data;
 }
 
 export async function newShortenedLink(data: { originalLink: string, shortenedLink: string }) {
