@@ -34,9 +34,12 @@ export async function newShortenedLink(data: { originalLink: string, shortenedLi
             "shortURL": data.shortenedLink
         }
         const response = await api.post("/", body, { headers: header });
+        if (response.status !== 201) {
+            throw new Error("Failed to create a new shortened link");
+        }
         return response.data;
-    } catch (error) {
-        return error;
+    } catch (error: any) {
+        throw new Error(error?.response?.data?.message || "Failed to create shortened link");
     }
 }
 

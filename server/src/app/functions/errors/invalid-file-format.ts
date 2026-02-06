@@ -4,7 +4,7 @@ export class NotFoundLinkError extends Error {
     public readonly statusCode: number;
 
     constructor(field: string, value: string) {
-        super(`Invalid file format for field "${field}": received "${value}"`);
+        super(`Formato de link inválido para o campo`);
         this.name = "NotFoundLinkError";
         this.field = field;
         this.value = value;
