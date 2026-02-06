@@ -2,12 +2,14 @@ import { DownloadSimple } from "phosphor-react";
 import { CustomButton } from "../systemUI/custom-button";
 import { ListEmpty } from './list-empty';
 import { CardItemHistory } from './card-item';
-import { useEffect } from "react";
-import { findAllShortened } from "../../http/shorten-api";
+import { useEffect, useState } from "react";
+import { findAllShortened, generatedCSVAllShortened } from "../../http/shorten-api";
 import { useDataStoreLink } from "../../dataStore/data-store-link";
+import toast from "react-hot-toast";
 
 export function HistoryLinks() {
-  const { links, setStoreLinks, updateAccessLink } = useDataStoreLink();
+  const [isLoading, setIsLoading] = useState({exporting: false});
+  const { links, setStoreLinks } = useDataStoreLink();
 
   async function fetchHistoryLinks() {
     try {
@@ -42,12 +44,26 @@ export function HistoryLinks() {
     };
   }, []);
 
+  async function handleExport() { 
+    try {
+      setIsLoading((prev) => ({ ...prev, exporting: true }));
+      const { reportUrl } = await generatedCSVAllShortened();
+      window.open(reportUrl, '_blank');
+      toast.success('CSV exportado com sucesso!');
+    } catch (error) {
+      console.error("Failed to export CSV:", error);
+    } finally {
+      setIsLoading((prev) => ({ ...prev, exporting: false }));
+    }
+  }
+
   return (
     <section className="flex flex-col w-full md:max-w-[593px] gap-4 bg-white rounded-lg p-4">
       <div className="flex flex-row justify-between items-center m-2">
         <p className='text-lg'>Meus Link</p>
         <CustomButton
           size="rectangular"
+          onClick={handleExport}
           disabled={links.length === 0}>
           <DownloadSimple size={16} />
           <p>Baixar CSV</p>

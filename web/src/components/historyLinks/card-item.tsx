@@ -14,19 +14,20 @@ export function CardItemHistory({
   link,
 }: CardItemHistoryProps) {
   const { originalLink, shortenedLink, accessCount } = link;
-  const host = `${import.meta.env.VITE_FRONTEND_URL}/${shortenedLink}`;
+  const host = `${import.meta.env.VITE_FRONTEND_HOST}/${shortenedLink}`;
+  const hrefLink = `${import.meta.env.VITE_FRONTEND_URL}/${shortenedLink}`;
   const { removeStoreLink } = useDataStoreLink();
 
   async function handleClipboard() {
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(host);
+        await navigator.clipboard.writeText(hrefLink);
         toast.success('Link copiado!');
       } else {
-        fallbackCopyToClipboard(host);
+        fallbackCopyToClipboard(hrefLink);
       }
     } catch (error) {
-      fallbackCopyToClipboard(host);
+      fallbackCopyToClipboard(hrefLink);
     }
   }
 
