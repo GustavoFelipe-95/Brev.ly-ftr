@@ -14,6 +14,7 @@ import { createLinkRoute } from "./routes/create-link";
 import { deleteLinkRoute } from "./routes/delete-link";
 import { listLinkRoute } from "./routes/get-links";
 import { findOneShortLinkRoute } from "./routes/get-original-link-by-short-link";
+import { exportCSVRoute } from "./routes/export-links";
 
 const server = fastify()
 
@@ -62,6 +63,7 @@ server.register(listLinkRoute);
 server.register(findOneShortLinkRoute);
 server.register(createLinkRoute);
 server.register(deleteLinkRoute);
+server.register(exportCSVRoute);
 
 server.listen({ port: env.PORT, host: '0.0.0.0' }).then(() => {
   console.log(`HTTP server running on http://localhost:${env.PORT}`)
