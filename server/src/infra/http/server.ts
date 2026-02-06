@@ -33,7 +33,7 @@ server.setErrorHandler((error, request, reply) => {
   });
 });
 
-server.register(fastifyCors, { origin: '*' })
+server.register(fastifyCors, { origin: '*', methods: ['GET', 'POST', 'DELETE'] });
 server.register(fastifySwagger, {
   openapi: {
     info: {
