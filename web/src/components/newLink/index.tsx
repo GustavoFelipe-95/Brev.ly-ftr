@@ -29,11 +29,8 @@ export function NewLink() {
   async function handleNewShortLink(data: any): Promise<void> {
       try {
         clearErrors();
-
         const response = await newShortenedLink(data);
-        console.log(response);
         addStoreLink(response);
-
         reset();
       } catch (error: any) {
         setError('shortenedLink', {
