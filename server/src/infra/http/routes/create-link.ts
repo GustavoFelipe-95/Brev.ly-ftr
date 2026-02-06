@@ -16,7 +16,9 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
             response: {
                 201: z.object({
                     id: z.string(),
-                    shortUrl: z.string(),
+                    originalLink: z.string(),   
+                    shortenedLink: z.string(),
+                    accessCount: z.number(),
                 }),
                 400: z.object({
                     message: z.string(),
@@ -29,7 +31,8 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
         const result = await createLink({ originalURL, shortURL });
 
         if(isRight(result)) {
-            return reply.status(201).send({ id: result.right.id, shortUrl: shortURL });
+            const itemObtained = unwrapEither(result);
+            return reply.status(201).send({ id: itemObtained.id, originalLink: originalURL, shortenedLink: shortURL, accessCount: 0 });
         }
 
         const error = unwrapEither(result);

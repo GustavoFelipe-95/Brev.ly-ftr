@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { InvalidFileFormatError } from './errors/invalid-file-format'
+import { NotFoundLinkError } from './errors/invalid-file-format'
 import { Either, makeLeft, makeRight } from '@/shared/either'
 import { isValidShortLink } from './utils/validationShortLink'
 import { schema } from '@/infra/db/schemas'
@@ -19,13 +19,13 @@ type LinkInput = z.input<typeof linkInput>
 
 export async function createLink(
   input: LinkInput
-): Promise<Either<InvalidFileFormatError, linkOutput>> {
+): Promise<Either<NotFoundLinkError, linkOutput>> {
   const { originalURL, shortURL } = linkInput.parse(input);
 
   const isValidURL = isValidShortLink(shortURL);
 
   if (!isValidURL) {
-    return makeLeft(new InvalidFileFormatError());
+    return makeLeft(new NotFoundLinkError("shortenedLink", shortURL));
   }
 
   const existingLink = await db
@@ -34,7 +34,7 @@ export async function createLink(
     .where(eq(schema.short_links.shortenedLink, shortURL));
 
   if (existingLink.length > 0) {
-    return makeLeft(new InvalidFileFormatError())
+    return makeLeft(new NotFoundLinkError("shortenedLink", shortURL));
   }
 
   const result = await db.insert(schema.short_links).values({
