@@ -17,7 +17,7 @@ export function HistoryLinks() {
       const [list] = await Promise.all([findAllShortened()]);
       setStoreLinks(list.links);
     } catch (error) {
-      console.error("Failed to fetch history links:", error);
+      toast.error('Erro ao carregar os links. Tente novamente.');
     } finally {
       setIsLoading((prev) => ({ ...prev, list: false }));
     }
@@ -54,20 +54,24 @@ export function HistoryLinks() {
       window.open(reportUrl, '_blank');
       toast.success('CSV exportado com sucesso!');
     } catch (error) {
-      console.error("Failed to export CSV:", error);
+      toast.error('Erro ao exportar CSV. Tente novamente.');
     } finally {
       setIsLoading((prev) => ({ ...prev, exporting: false }));
     }
   }
 
   return (
-    <section className="flex flex-col w-full md:max-w-[593px] gap-4 bg-white rounded-lg p-4">
+    <section 
+      className="flex flex-col w-full md:max-w-[593px] gap-4 bg-white rounded-lg p-4"
+      aria-label="Histórico de links encurtados">
       <div className="flex flex-row justify-between items-center m-2">
-        <p className='text-lg'>Meus Link</p>
+        <p className='text-lg' id="history-title">Meus Link</p>
         <CustomButton
           size="rectangular"
           onClick={handleExport}
-          disabled={isLoading.list || isLoading.exporting || links.length === 0}>
+          disabled={isLoading.list || isLoading.exporting || links.length === 0}
+          aria-label="Baixar relatório CSV dos links"
+          title="Exportar links para arquivo CSV">
             {
             isLoading.exporting
               ? <LoadingSpinner size={18} lineSize={2} color="currentColor" className="text-gray-400" /> 
@@ -77,10 +81,14 @@ export function HistoryLinks() {
         </CustomButton>
       </div>
 
-      <div className="overflow-y-auto max-h-[350vh] md:max-h-[650vh]">
+      <div 
+        className="overflow-y-auto max-h-[350vh] md:max-h-[650vh]"
+        role="region"
+        aria-labelledby="history-title"
+        aria-live="polite">
         {
           isLoading.list ? (
-            <div className="flex flex-col w-full p-8 items-center justify-center border-t border-gray-200">
+            <div className="flex flex-col w-full p-8 items-center justify-center border-t border-gray-200" role="status" aria-label="Carregando links">
               <LoadingSpinner size={40} color="currentColor" className="text-blue-base" label="Obtendo seus links..." />
             </div>
           ) : links.length > 0 ? (

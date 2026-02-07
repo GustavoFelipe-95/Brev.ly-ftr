@@ -42,9 +42,14 @@ export function NewLink() {
   }
 
   return (
-    <section className="flex flex-col w-full md:max-w-[380px] gap-4 bg-white rounded-lg p-4">
-      <p className='text-lg m-2'>Novo Link</p>
-      <form onSubmit={handleSubmit(handleNewShortLink)} className="flex flex-col m-2 gap-4">
+    <section 
+      className="flex flex-col w-full md:max-w-[380px] gap-4 bg-white rounded-lg p-4"
+      aria-label="Formulário para criar novo link encurtado">
+      <p className='text-lg m-2' id="new-link-title">Novo Link</p>
+      <form 
+        onSubmit={handleSubmit(handleNewShortLink)} 
+        className="flex flex-col m-2 gap-4"
+        aria-labelledby="new-link-title">
         <CustomInput 
           labelName="Link Original"
           placeholder="www.exemplo.com.br"
@@ -60,7 +65,9 @@ export function NewLink() {
         <button
           type="submit"
           disabled={filledFields || isSubmitting || isLoading}
-          className="flex flex-row items-center justify-center gap-2 bg-blue-base text-white font-semibold py-2 rounded-md transition-colors mt-2 disabled:opacity-50 enabled:cursor-pointer enabled:hover:bg-blue-dark">
+          className="flex flex-row items-center justify-center gap-2 bg-blue-base text-white font-semibold py-2 rounded-md transition-colors mt-2 disabled:opacity-50 enabled:cursor-pointer enabled:hover:bg-blue-dark"
+          aria-label={isSubmitting || isLoading ? 'Encurtando link...' : 'Salvar novo link'}
+          aria-busy={isSubmitting || isLoading}>
           { isSubmitting && !isLoading && <LoadingSpinner size={20} color="currentColor" className="text-blue-base" /> }
           <span>{isSubmitting || isLoading ? 'Encurtando link...' : 'Salvar Link'}</span>
         </button>
