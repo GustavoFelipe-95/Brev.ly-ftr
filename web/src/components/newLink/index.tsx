@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { newLinkSchema } from "../../schemas/newLinkSchema";
 import { newShortenedLink } from "../../http/shorten-api";
 import { useDataStoreLink } from "../../dataStore/data-store-link";
+import { LoadingSpinner } from "../systemUI/loading/spinner";
 
 export function NewLink() {
   const { addStoreLink } = useDataStoreLink();
@@ -59,8 +60,9 @@ export function NewLink() {
         <button
           type="submit"
           disabled={filledFields || isSubmitting || isLoading}
-          className="bg-blue-base text-white font-semibold py-2 rounded-md transition-colors mt-2 disabled:opacity-50 enabled:cursor-pointer enabled:hover:bg-blue-dark">
-          {isSubmitting || isLoading ? 'Encurtando link...' : 'Salvar Link'}
+          className="flex flex-row items-center justify-center gap-2 bg-blue-base text-white font-semibold py-2 rounded-md transition-colors mt-2 disabled:opacity-50 enabled:cursor-pointer enabled:hover:bg-blue-dark">
+          { isSubmitting && !isLoading && <LoadingSpinner size={20} color="currentColor" className="text-blue-base" /> }
+          <span>{isSubmitting || isLoading ? 'Encurtando link...' : 'Salvar Link'}</span>
         </button>
       </form>
     </section>

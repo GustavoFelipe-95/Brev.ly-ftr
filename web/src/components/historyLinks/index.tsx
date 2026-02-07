@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 import { findAllShortened, generatedCSVAllShortened } from "../../http/shorten-api";
 import { useDataStoreLink } from "../../dataStore/data-store-link";
 import toast from "react-hot-toast";
+import { LoadingSpinner } from "../systemUI/loading/spinner";
 
 export function HistoryLinks() {
-  const [isLoading, setIsLoading] = useState({exporting: false});
+  const [isLoading, setIsLoading] = useState({list: true, exporting: false});
   const { links, setStoreLinks } = useDataStoreLink();
 
   async function fetchHistoryLinks() {
@@ -17,6 +18,8 @@ export function HistoryLinks() {
       setStoreLinks(list.links);
     } catch (error) {
       console.error("Failed to fetch history links:", error);
+    } finally {
+      setIsLoading((prev) => ({ ...prev, list: false }));
     }
   } 
 
@@ -64,15 +67,23 @@ export function HistoryLinks() {
         <CustomButton
           size="rectangular"
           onClick={handleExport}
-          disabled={links.length === 0}>
-          <DownloadSimple size={16} />
-          <p>Baixar CSV</p>
+          disabled={isLoading.list || isLoading.exporting || links.length === 0}>
+            {
+            isLoading.exporting
+              ? <LoadingSpinner size={18} lineSize={2} color="currentColor" className="text-gray-400" /> 
+              : <DownloadSimple size={16} className="text-primary" />
+            }
+          <p>{isLoading.exporting ? "Gerando CSV..." : "Baixar CSV"}</p>
         </CustomButton>
       </div>
 
       <div className="overflow-y-auto max-h-[350vh] md:max-h-[650vh]">
         {
-          links.length > 0 ? (
+          isLoading.list ? (
+            <div className="flex flex-col w-full p-8 items-center justify-center border-t border-gray-200">
+              <LoadingSpinner size={40} color="currentColor" className="text-blue-base" label="Obtendo seus links..." />
+            </div>
+          ) : links.length > 0 ? (
             links.map((item, index) => (
               <CardItemHistory key={`${item.id}_${item.shortenedLink}_${index}`} link={item} />
             ))
