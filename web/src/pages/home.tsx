@@ -1,4 +1,4 @@
-import LogoBrevLy from '../assets/logo.svg'
+import LogoBrevLy from '../assets/Logo.svg'
 import { NewLink } from '../components/newLink'
 import { HistoryLinks } from '../components/historyLinks'
 
