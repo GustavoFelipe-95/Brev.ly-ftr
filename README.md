@@ -614,8 +614,8 @@ Este projeto está sob a licença ISC.
 ## 👨‍💻 Autor
 
 **Gustavo Felipe**  
-📧 Email: zegustavo149@gmail.com
-🔗 LinkedIn: [Gustavo Melo](www.linkedin.com/in/jgustavofmespindola)
+📧 Email: zegustavo149@gmail.com<br>
+🔗 LinkedIn: [Gustavo Melo](www.linkedin.com/in/jgustavofmespindola)<br>
 🔗 GitHub: [@GustavoFelipe-95](https://github.com/GustavoFelipe-95)
 
 ---
