@@ -75,10 +75,20 @@ export function CardItemHistory({
       <div className="flex flex-row gap-5 items-center">
         <p className="text-xs text-gray-500 whitespace-nowrap">{accessCount} acesso{accessCount >= 2 ? 's' : ''}</p>
         <div className="flex flex-row gap-1">
-        <CustomButton size="square" type="button" onClick={() => handleClipboard()}>
+        <CustomButton 
+          size="square" 
+          type="button" 
+          onClick={() => handleClipboard()}
+          aria-label="Copiar link encurtado"
+          title="Copiar link para área de transferência">
           <Copy size={16} className="text-gray-600" />
         </CustomButton>
-        <CustomButton size="square" type="button" onClick={() => handleDelete(link.shortenedLink)}>
+        <CustomButton 
+          size="square" 
+          type="button" 
+          onClick={() => handleDelete(link.shortenedLink)}
+          aria-label="Deletar link"
+          title="Remover link permanentemente">
           <Trash size={16} className="text-gray-600" />
         </CustomButton>
         <Toaster position="bottom-center" />
