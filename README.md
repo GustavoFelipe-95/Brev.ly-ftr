@@ -270,13 +270,6 @@ cd server
 docker-compose up -d
 ```
 
-#### Frontend
-
-```bash
-cd web
-docker-compose up -d
-```
-
 ---
 
 ## 📁 Estrutura do Projeto
@@ -551,16 +544,6 @@ docker-compose up -d
 Serviços disponíveis:
 - API: `http://localhost:3000`
 - PostgreSQL: `localhost:5432`
-
-#### Frontend
-
-```bash
-cd web
-docker-compose up -d
-```
-
-Serviço disponível:
-- Web: `http://localhost:5173`
 
 ---
 
