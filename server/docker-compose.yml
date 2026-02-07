@@ -1,6 +1,7 @@
 services:
   pg:
     container_name: brevly-postgres
+    restart: unless-stopped
     image: bitnami/postgresql:latest
     ports:
       - $POSTGRES_PORT:$POSTGRES_PORT
@@ -9,4 +10,43 @@ services:
       - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
       - POSTGRES_DB=$POSTGRES_DB
     volumes:
-      - ./docker:/docker-entrypoint-initdb.d:ro
+      - ./docker:/docker-entrypoint-initdb.d
+      - db:/var/lib/postgresql/data
+    networks:
+      - brevly-network
+      - db
+
+  api:
+    container_name: brevly-api
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - $PORT:$PORT
+    environment:
+      - PORT=$PORT
+      - DATABASE_URL=$DATABASE_URL
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_PORT=$POSTGRES_PORT
+      - POSTGRES_DB=$POSTGRES_DB
+      - CLOUDFLARE_ACCOUNT_ID=$CLOUDFLARE_ACCOUNT_ID
+      - CLOUDFLARE_ACCESS_KEY_ID=$CLOUDFLARE_ACCESS_KEY_ID
+      - CLOUDFLARE_SECRET_ACCESS_KEY=$CLOUDFLARE_SECRET_ACCESS_KEY
+      - CLOUDFLARE_BUCKET_NAME=$CLOUDFLARE_BUCKET_NAME
+      - CLOUDFLARE_PUBLIC_URL=$CLOUDFLARE_PUBLIC_URL
+    depends_on:
+      - pg
+    networks:
+      - brevly-network
+      - db
+
+volumes:
+  db:
+
+networks:
+  brevly-network:
+    driver: bridge
+  db:
+    driver: bridge
