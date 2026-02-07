@@ -1,7 +1,7 @@
 {
   "name": "web",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.4",
+    "motion": "^12.33.0",
     "phosphor-react": "^1.4.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
