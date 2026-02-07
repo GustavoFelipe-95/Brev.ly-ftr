@@ -15,9 +15,10 @@ export function HistoryLinks() {
   async function fetchHistoryLinks() {
     try {
       const [list] = await Promise.all([findAllShortened()]);
-      setStoreLinks(list.links);
+      setStoreLinks(list?.links || []);
     } catch (error) {
       toast.error('Erro ao carregar os links. Tente novamente.');
+      setStoreLinks([]);
     } finally {
       setIsLoading((prev) => ({ ...prev, list: false }));
     }
